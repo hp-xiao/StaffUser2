@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.icss.mapper.IStaffMapper">
+
+   <resultMap type="Staff" id="staffCardResultMap">
+		<id property="sno" column="sno"/>
+		<result property="name" column="name"/>
+		<association property="user" javaType="User">
+			<result property="uname" column="uname"/>
+		</association>
+		<collection property="cards" ofType="Card">
+			<result property="ctime" column="ctime" />
+			<result property="info" column="info"/>
+		</collection>	
+	</resultMap>
+
+ <insert id="addStaff" parameterType="Staff">
+    insert into tstaff(sno,name,birthday,address,tel) 
+                values(#{sno},#{name},#{birthday},#{address},#{tel})
+ </insert>
+ 
+ <insert id="addCard" parameterType="Card" useGeneratedKeys="true" keyColumn="aid" keyProperty="aid" >
+		insert into tcard(sno,ctime,info) values(#{sno},now(),#{info}) 
+	</insert>
+	
+	<select id="getStaffCards" resultType="com.icss.dto.StaffCard">
+		select c.ctime,c.info,s.sno,s.name,u.uname from tcard c ,tstaff s,tuser u  where c.sno=s.sno and u.sno=s.sno and s.sno=#{sno}
+	
+	</select>
+	
+	<select id="getStaffCards2" resultMap="staffCardResultMap">
+		select c.ctime,c.info,s.sno,s.name,u.uname from tcard c ,tstaff s,tuser u  where c.sno=s.sno and u.sno=s.sno and s.sno=#{sno}	
+	</select>
+
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.icss.mapper.IUserMapper">
+
+	<insert id="addUser" parameterType="User">
+		insert into tuser values(#{uname},#{sno},#{pwd},#{role})
+	</insert>
+
+	<select id="getAllUser" resultType="User">
+		select * from tuser where sno in
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+				#{item}
+		</foreach>
+	</select>
+
+	<select id="getUser" resultType="User">
+		select * from tuser where sno =
+		#{sno}
+	</select>
+
+
+	<select id="countAllUserNum" resultType="int">
+	  <![CDATA[  select count(*) from tuser  ]]>
+	</select>
+
+
+</mapper>
